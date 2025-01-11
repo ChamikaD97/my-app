@@ -1,22 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
 function App() {
+  const [filteredData, setFilteredData] = useState([]);
+
+  const fetchEngines = async () => {
+    const API_URL = "http://13.60.98.221:5000";
+
+    try {
+      const engineRes = await axios.get(`${API_URL}/api/engines`, {
+        headers: { Authorization: "token" },
+      });
+
+      setFilteredData(engineRes.data);
+
+    } catch (error) {
+      console.error("Error fetching engines:", error.message);
+    }
+  };
+useEffect(()=>{
+  fetchEngines()
+},[])
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+       
+        {filteredData.length}
+      
       </header>
     </div>
   );
